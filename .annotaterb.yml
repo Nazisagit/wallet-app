@@ -15,7 +15,7 @@
 :exclude_scaffolds: true
 :exclude_serializers: false
 :exclude_sti_subclasses: false
-:exclude_tests: false
+:exclude_tests: true
 :force: false
 :format_markdown: false
 :format_rdoc: false
