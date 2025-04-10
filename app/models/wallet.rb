@@ -2,10 +2,11 @@
 #
 # Table name: wallets
 #
-#  id         :bigint           not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  user_id    :bigint           not null
+#  id            :bigint           not null, primary key
+#  balance_cents :integer          default(0)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  user_id       :bigint           not null
 #
 # Indexes
 #
@@ -17,4 +18,5 @@
 #
 class Wallet < ApplicationRecord
   belongs_to :user
+  monetize :balance_cents
 end
