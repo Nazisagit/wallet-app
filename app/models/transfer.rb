@@ -14,4 +14,5 @@ class Transfer < Transaction
   belongs_to :sender_wallet, class_name: "Wallet"
   belongs_to :receiver_wallet, class_name: "Wallet"
   validates :sender_wallet_id, :receiver_wallet_id, presence: true
+  validates :receiver_wallet_id, comparison: { other_than: :sender_wallet_id }
 end
