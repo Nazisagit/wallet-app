@@ -17,6 +17,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Wallet < ApplicationRecord
-  belongs_to :user
   monetize :balance_cents
+  belongs_to :user
+  has_many :transactions
 end
