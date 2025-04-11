@@ -19,5 +19,5 @@
 class Wallet < ApplicationRecord
   monetize :balance_cents, numericality: { greater_than_or_equal_to: 0 }
   belongs_to :user
-  has_many :transactions
+  has_many :transactions, dependent: :destroy
 end
