@@ -3,7 +3,9 @@ module Api
     class WalletsController < Api::ApplicationController
       before_action :set_wallet
 
-      def deposit; end
+      def deposit
+        @wallet = DepositService.call(wallet: @wallet, amount: params[:amount])
+      end
       def withdraw; end
       def transfer; end
       def balance; end

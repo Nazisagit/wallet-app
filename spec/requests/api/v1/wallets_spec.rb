@@ -1,7 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe "Api::V1::Wallets", type: :request do
+  let!(:user) { create(:user) }
+
   describe "PUT /deposit" do
+    context "when given a valid wallet and amount" do
+      let!(:wallet) { create(:wallet, user: user) }
+      let(:amount) { 50 }
+
+      it "returns the previous balance and new balance" do
+        put api_v1_wallet_deposit_path(wallet_id: wallet.id), params: { amount: amount }
+
+        expect(response.status).to eq(200)
+        expect(json["previous_balance"]).to eq("$100")
+        expect(json["new_balance"]).to eq("$150")
+      end
+    end
   end
 
   describe "PUT /withdraw" do
@@ -11,8 +25,6 @@ RSpec.describe "Api::V1::Wallets", type: :request do
   end
 
   describe "GET /balance" do
-    let!(:user) { create(:user) }
-
     before do
       get api_v1_wallet_balance_path(wallet_id: wallet.id)
     end
@@ -37,7 +49,6 @@ RSpec.describe "Api::V1::Wallets", type: :request do
   end
 
   describe "GET /transactions" do
-    let!(:user) { create(:user) }
     let!(:wallet) { create(:wallet, user: user) }
 
     context "when there are no transactions" do
@@ -52,7 +63,7 @@ RSpec.describe "Api::V1::Wallets", type: :request do
     context "when there are transactions" do
       let!(:deposit) { create(:deposit, wallet: wallet) }
       let!(:withdrawal) { create(:withdrawal, wallet: wallet) }
-      let!(:transfer) { create(:transfer, wallet: wallet, sender_wallet: wallet, receiver_wallet: create(:wallet)) }
+      let!(:transfer) { create(:transfer, wallet: wallet, sender_wallet: wallet, recipient_wallet: create(:wallet)) }
 
       it "should return an array of transactions ordered newest to oldest" do
         get api_v1_wallet_transactions_path(wallet_id: wallet.id)
