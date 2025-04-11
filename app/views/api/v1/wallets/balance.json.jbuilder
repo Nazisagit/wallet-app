@@ -1,2 +1,1 @@
-json.user @wallet.user.email_address
-json.balance @wallet.balance
+json.balance humanized_money_with_symbol(@wallet.balance)

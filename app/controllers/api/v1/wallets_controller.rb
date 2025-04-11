@@ -7,7 +7,9 @@ module Api
       def withdraw; end
       def transfer; end
       def balance; end
-      def transactions; end
+      def transactions
+        @transactions = @wallet.transactions.order(created_at: :desc)
+      end
 
       private
 
