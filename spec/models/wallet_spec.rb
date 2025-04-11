@@ -11,7 +11,7 @@ RSpec.describe Wallet, type: :model do
     let!(:wallet) { create(:wallet, user: user) }
     let!(:deposit) { create(:deposit, wallet: wallet) }
     let!(:withdrawal) { create(:withdrawal, wallet: wallet) }
-    let!(:transfer) { create(:transfer, wallet: wallet, sender_wallet: wallet, receiver_wallet: create(:wallet)) }
+    let!(:transfer) { create(:transfer, wallet: wallet, sender_wallet: wallet, recipient_wallet: create(:wallet)) }
 
     it "should hold different types of transactions" do
       expect(wallet.transactions.size).to eq(3)

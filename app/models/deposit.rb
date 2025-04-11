@@ -2,14 +2,14 @@
 #
 # Table name: transactions
 #
-#  id                 :bigint           not null, primary key
-#  amount_cents       :integer
-#  type               :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  receiver_wallet_id :bigint
-#  sender_wallet_id   :bigint
-#  wallet_id          :bigint           not null
+#  id                  :bigint           not null, primary key
+#  amount_cents        :integer
+#  type                :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  recipient_wallet_id :bigint
+#  sender_wallet_id    :bigint
+#  wallet_id           :bigint           not null
 #
 # Indexes
 #

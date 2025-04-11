@@ -7,7 +7,7 @@ FactoryBot.define do
     factory :withdrawal, class: "Withdrawal"
     factory :transfer, class: "Transfer" do
       association :sender_wallet, factory: :wallet
-      association :receiver_wallet, factory: :wallet
+      association :recipient_wallet, factory: :wallet
     end
   end
 end
