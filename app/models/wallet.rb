@@ -17,7 +17,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Wallet < ApplicationRecord
-  monetize :balance_cents
+  monetize :balance_cents, numericality: { greater_than_or_equal_to: 0 }
   belongs_to :user
   has_many :transactions
 end
