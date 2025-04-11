@@ -19,6 +19,18 @@ RSpec.describe "Api::V1::Wallets", type: :request do
   end
 
   describe "PUT /withdraw" do
+    context "when given a valid wallet and amount" do
+      let!(:wallet) { create(:wallet, user: user) }
+      let(:amount) { 50 }
+
+      it "returns the previous balance and new balance" do
+        put api_v1_wallet_withdraw_path(wallet_id: wallet.id), params: { amount: amount }
+
+        expect(response.status).to eq(200)
+        expect(json["previous_balance"]).to eq("$100")
+        expect(json["new_balance"]).to eq("$50")
+      end
+    end
   end
 
   describe "PUT /transfer" do

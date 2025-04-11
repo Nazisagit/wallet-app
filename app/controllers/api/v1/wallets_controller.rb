@@ -6,7 +6,11 @@ module Api
       def deposit
         @wallet = DepositService.call(wallet: @wallet, amount: params[:amount])
       end
-      def withdraw; end
+
+      def withdraw
+        @wallet = WithdrawalService.call(wallet: @wallet, amount: params[:amount])
+      end
+
       def transfer; end
       def balance; end
       def transactions
