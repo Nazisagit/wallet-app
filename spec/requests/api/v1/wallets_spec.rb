@@ -34,6 +34,30 @@ RSpec.describe "Api::V1::Wallets", type: :request do
   end
 
   describe "PUT /transfer" do
+    let(:transfer_params) do
+      {
+        transfer: {
+          recipient_wallet_id: recipient_wallet.id,
+          amount: amount
+        }
+      }
+    end
+
+    context "when the sender and recipient are valid" do
+      let!(:wallet) { create(:wallet, user: user) }
+      let!(:recipient) { create(:user) }
+      let!(:recipient_wallet) { create(:wallet, user: recipient) }
+      let(:amount) { 50 }
+
+      it "returns the transfer information" do
+        put api_v1_wallet_transfer_path(wallet_id: wallet.id), params: transfer_params
+
+        expect(response.status).to eq(200)
+        expect(json["amount"]).to eq("$#{amount}")
+        expect(json["recipient"]["id"]).to eq(recipient.id)
+        expect(json["recipient"]["wallet_id"]).to eq(recipient_wallet.id)
+      end
+    end
   end
 
   describe "GET /balance" do
