@@ -2,15 +2,14 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   namespace :api, defaults: { format: :json } do
-    namespace :v1 do
-      resources :wallets, only: [] do
-        put :deposit
-        put :withdraw
-        put :transfer
-        get :balance
-        get :transactions
-      end
+    resource :wallet, only: [] do
+      put :deposit
+      put :withdraw
+      put :transfer
+      get :balance
+      get :transactions
     end
+    resources :sessions, only: :create
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
