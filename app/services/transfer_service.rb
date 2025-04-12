@@ -6,15 +6,17 @@ class TransferService < ApplicationService
   end
 
   def call
-    withdrawal = WithdrawalService.call(wallet: sender_wallet, amount: amount)
-    deposit = DepositService.call(wallet: recipient_wallet, amount: amount)
-    Transfer.create!(
-      wallet: sender_wallet,
-      sender_wallet: sender_wallet,
-      recipient_wallet: recipient_wallet,
-      withdrawal: withdrawal,
-      deposit: deposit,
-      amount: amount)
+    ApplicationRecord.transaction do
+      withdrawal = WithdrawalService.call(wallet: sender_wallet, amount: amount)
+      deposit = DepositService.call(wallet: recipient_wallet, amount: amount)
+      Transfer.create!(
+        wallet: sender_wallet,
+        sender_wallet: sender_wallet,
+        recipient_wallet: recipient_wallet,
+        withdrawal: withdrawal,
+        deposit: deposit,
+        amount: amount)
+    end
   end
 
   private
