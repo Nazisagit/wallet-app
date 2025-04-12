@@ -9,6 +9,7 @@
 #  updated_at          :datetime         not null
 #  recipient_wallet_id :bigint
 #  sender_wallet_id    :bigint
+#  transfer_id         :bigint
 #  wallet_id           :bigint           not null
 #
 # Indexes
@@ -22,10 +23,16 @@
 class Transfer < Transaction
   belongs_to :sender_wallet, class_name: "Wallet"
   belongs_to :recipient_wallet, class_name: "Wallet"
+  has_one :withdrawal
+  has_one :deposit
   validates :sender_wallet_id, :recipient_wallet_id, presence: true
   validates :recipient_wallet_id, comparison: { other_than: :sender_wallet_id }
 
   def recipient
     recipient_wallet.user
+  end
+
+  def sender
+    sender_wallet.user
   end
 end

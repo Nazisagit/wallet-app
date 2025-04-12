@@ -9,6 +9,7 @@
 #  updated_at          :datetime         not null
 #  recipient_wallet_id :bigint
 #  sender_wallet_id    :bigint
+#  transfer_id         :bigint
 #  wallet_id           :bigint           not null
 #
 # Indexes

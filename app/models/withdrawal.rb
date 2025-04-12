@@ -9,6 +9,7 @@
 #  updated_at          :datetime         not null
 #  recipient_wallet_id :bigint
 #  sender_wallet_id    :bigint
+#  transfer_id         :bigint
 #  wallet_id           :bigint           not null
 #
 # Indexes
@@ -20,4 +21,5 @@
 #  fk_rails_...  (wallet_id => wallets.id)
 #
 class Withdrawal < Transaction
+  belongs_to :transfer, class_name: "Transfer", optional: true
 end
