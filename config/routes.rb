@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resource :session
-  resources :passwords, param: :token
   namespace :api, defaults: { format: :json } do
     resource :wallet, only: [] do
       put :deposit
