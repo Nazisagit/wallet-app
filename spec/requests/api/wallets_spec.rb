@@ -18,47 +18,78 @@ RSpec.describe "Api::Wallets", type: :request do
   end
 
   describe "PUT /withdraw" do
-    before do
-      login
-      user.wallet.update(balance: 100)
-    end
-    after { user.wallet.update(balance: 0) }
+    before { login }
+
     context "when given a valid wallet and amount" do
+      after { user.wallet.update(balance: 0) }
       let(:amount) { 50 }
 
-      it "returns the previous balance and new balance" do
-        put withdraw_api_wallet_path, params: { amount: amount }, headers: headers
+      context "and when the wallet has enough funds" do
+        it "returns the previous balance and new balance" do
+          user.wallet.update(balance: 100)
+          put withdraw_api_wallet_path, params: { amount: amount }, headers: headers
 
-        expect(response.status).to eq(200)
-        expect(json["previous_balance"]).to eq("$100")
-        expect(json["new_balance"]).to eq("$50")
+          expect(response.status).to eq(200)
+          expect(json["previous_balance"]).to eq("$100")
+          expect(json["new_balance"]).to eq("$50")
+        end
+      end
+
+      context "and when the wallet is lacking funds" do
+        it "returns an error message citing the lack of funds" do
+          put withdraw_api_wallet_path, params: { amount: amount }, headers: headers
+
+          expect(response.status).to eq(400)
+          expect(json["error"]).to eq("Wallet does not hold enough funds")
+        end
       end
     end
   end
 
   describe "PUT /transfer" do
-    before do
-      login
-      user.wallet.update(balance: 100)
-    end
+    before { login }
     after { user.wallet.update(balance: 0) }
+
     let(:transfer_params) do
       {
         recipient_wallet_id: recipient.wallet.id,
         amount: amount
       }
     end
+    let!(:recipient) { create(:user) }
+    let(:amount) { 50 }
 
     context "when the sender and recipient are valid" do
-      let!(:recipient) { create(:user) }
-      let(:amount) { 50 }
-
       it "returns the transfer information" do
+        user.wallet.update(balance: 100)
         put transfer_api_wallet_path, params: transfer_params, headers: headers
+
         expect(response.status).to eq(200)
         expect(json["amount"]).to eq("$#{amount}")
         expect(json["recipient"]["id"]).to eq(recipient.id)
         expect(json["recipient"]["wallet_id"]).to eq(recipient.wallet.id)
+      end
+    end
+
+    context "when the sender is lacking funds" do
+      it "returns an error message citing the lack of funds" do
+        put transfer_api_wallet_path, params: transfer_params, headers: headers
+
+        expect(response.status).to eq(400)
+        expect(json["error"]).to eq("Wallet does not hold enough funds")
+      end
+    end
+
+    context "when the receiver is invalid" do
+      let(:recipient) { double(id: 200, wallet: recipient_wallet) }
+      let(:recipient_wallet) { double(id: 200) }
+
+      it "returns an error message saying the wallet is not valid" do
+        user.wallet.update(balance: 100)
+        put transfer_api_wallet_path, params: transfer_params, headers: headers
+
+        expect(response.status).to eq(400)
+        expect(json["error"]).to eq("A valid wallet was not provided")
       end
     end
   end

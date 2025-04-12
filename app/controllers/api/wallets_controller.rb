@@ -1,5 +1,6 @@
 module Api
   class WalletsController < Api::ApplicationController
+    rescue_from ArgumentError, StandardError, with: :show_errors
     before_action :set_wallet
 
     def deposit
