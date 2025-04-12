@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_secure_token :auth_token
   has_many :sessions, dependent: :destroy
   has_one :wallet, dependent: :destroy
+  after_create :create_wallet
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 end
