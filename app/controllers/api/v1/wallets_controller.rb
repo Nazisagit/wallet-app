@@ -4,11 +4,11 @@ module Api
       before_action :set_wallet
 
       def deposit
-        @wallet = DepositService.call(wallet: @wallet, amount: params[:amount])
+        @deposit = DepositService.call(wallet: @wallet, amount: params[:amount])
       end
 
       def withdraw
-        @wallet = WithdrawalService.call(wallet: @wallet, amount: params[:amount])
+        @withdrawal = WithdrawalService.call(wallet: @wallet, amount: params[:amount])
       end
 
       def transfer; end
