@@ -5,4 +5,7 @@ json.array! @transactions do |transaction|
   if transaction.is_a?(Transfer)
     json.recipient transaction.recipient.email_address
   end
+  if !transaction.is_a?(Transfer) && transaction.transfer.present?
+    json.transfer_id transaction.transfer_id
+  end
 end
