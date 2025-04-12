@@ -9,11 +9,11 @@ class WithdrawalService < ApplicationService
       raise ArgumentError, "Amount cannot be a zero or negative value" if amount.zero? || amount.negative?
       raise ArgumentError, "A valid wallet was not provided" unless wallet.is_a?(Wallet)
       raise StandardError, "Wallet does not hold enough funds" if amount > wallet.balance.to_f
-      deposit = Withdrawal.create!(wallet: wallet, amount: amount)
-      new_balance = wallet.balance - deposit.amount
+      withdrawal = Withdrawal.create!(wallet: wallet, amount: amount)
+      new_balance = wallet.balance - withdrawal.amount
       wallet.update(balance: new_balance)
+      withdrawal
     end
-    wallet
   end
 
   private

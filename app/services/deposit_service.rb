@@ -11,8 +11,8 @@ class DepositService < ApplicationService
       deposit = Deposit.create!(wallet: wallet, amount: amount)
       new_balance = wallet.balance + deposit.amount
       wallet.update(balance: new_balance)
+      deposit
     end
-    wallet
   end
 
   private

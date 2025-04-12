@@ -23,8 +23,8 @@ RSpec.describe "DepositService", type: :service do
           expect(wallet.balance.to_s).to eq("150.00")
         end
 
-        it "returns a wallet object" do
-          expect(subject.call(wallet: wallet, amount: amount)).to eq(wallet)
+        it "returns a Deposit object" do
+          expect(subject.call(wallet: wallet, amount: amount)).to be_an_instance_of(Deposit)
         end
       end
 
@@ -49,7 +49,8 @@ RSpec.describe "DepositService", type: :service do
         it "raises an error" do
           expect {
             subject.call(wallet: wallet, amount: amount)
-          }.to raise_error(ArgumentError, "Amount cannot be a zero or negative value")
+          }.to change(Deposit, :count).by(0)
+          .and raise_error(ArgumentError, "Amount cannot be a zero or negative value")
         end
       end
 
@@ -59,7 +60,8 @@ RSpec.describe "DepositService", type: :service do
         it "raises an error" do
           expect {
             subject.call(wallet: wallet, amount: amount)
-          }.to raise_error(ArgumentError, "Amount cannot be a zero or negative value")
+          }.to change(Deposit, :count).by(0)
+          .and raise_error(ArgumentError, "Amount cannot be a zero or negative value")
         end
       end
     end
@@ -71,7 +73,8 @@ RSpec.describe "DepositService", type: :service do
       it "raises an error" do
         expect {
           subject.call(wallet: wallet, amount: amount)
-        }.to raise_error(ArgumentError, "A valid wallet was not provided")
+        }.to change(Deposit, :count).by(0)
+        .and raise_error(ArgumentError, "A valid wallet was not provided")
       end
     end
   end
