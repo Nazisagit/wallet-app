@@ -20,4 +20,10 @@ class Wallet < ApplicationRecord
   monetize :balance_cents, numericality: { greater_than_or_equal_to: 0 }
   belongs_to :user
   has_many :transactions, dependent: :destroy
+
+  def all_transactions
+    Transaction
+      .where("(wallet_id = :id) OR (type = 'Transfer' AND (sender_wallet_id = :id OR recipient_wallet_id = :id))", id: self.id)
+      .order(created_at: :desc)
+  end
 end
