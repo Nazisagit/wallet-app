@@ -59,7 +59,7 @@ group :development, :test do
 
   gem "shoulda-matchers", "~> 6.4"
 
-  gem "factory_bot_rails", "~> 6.4", ">= 6.4.4"
+  gem "factory_bot_rails", "~> 6.5"
 
   gem "faker", "~> 3.5", ">= 3.5.1"
 end
