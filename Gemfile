@@ -68,5 +68,5 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 
-  gem "annotaterb", "~> 4.14"
+  gem "annotaterb", "~> 4.19"
 end
